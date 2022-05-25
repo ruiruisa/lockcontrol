@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 新 Bootstrap5 核心 CSS 文件 -->
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+ 
+<!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
+<script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
+ 
+<!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>主页</title>
+</head>
+<body>
+
+<link th:replace="common :: topmenu">
+<h3 class="row col-8 offset-2 text-danger">[[${gamemsg}]]</h3>
+
+    <br><br><br><br><br><br><br><br>
+
+    <div class="row col-4 offset-4">
+        <button type="button" class="btn btn-danger">剩余时间<br>[[${date}]]
+        </button>
+    </div>
+
+    <br><br><br><br><br><br><br>
+
+        <form style="margin:0px;display:inline;" th:action="@{/gameclean}">
+            <button type="submit" class="btn btn-outline-info col-2 offset-2">清洁</button>
+        </form>
+        <form style="margin:0px;display:inline;" th:action="@{/lockon}">
+            <button type="submit" class="btn btn-outline-info col-2 offset-1">解锁</button>
+        </form>
+        <form style="margin:0px;display:inline;" th:action="@{/delgame}">
+            <button type="submit" class="btn btn-danger  col-2 offset-1">删除</button>
+        </form>
+<br><br>
+        <form style="margin:0px;display:inline;" th:action="@{/game}">
+            <button type="submit" class="btn btn-outline-info col-2 offset-2">游戏</button>
+        </form>
+        <form style="margin:0px;display:inline;" th:action="@{/friend}">
+            <button type="submit" class="btn btn-outline-info col-2 offset-1">好友</button>
+        </form>
+        <form style="margin:0px;display:inline;" th:action="@{/open}">
+            <button type="submit" class="btn btn-success col-2 offset-1">撬锁</button>
+        </form>
+
+
+
+</body>
+</html>
