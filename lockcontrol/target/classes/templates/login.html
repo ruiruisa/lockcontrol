@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 新 Bootstrap5 核心 CSS 文件 -->
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+ 
+<!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
+<script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
+ 
+<!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>登录</title>
+</head>
+<body>
+    <br><br><br><br><br><br><br>
+    <div class="row col-8 offset-2">
+        <h1 class="text-info">Lock</h1>
+        <h4 class="text-danger">[[${msg}]]</h4>
+        <form th:action="@{/userlogin}" method="post">
+            <div class="mb-3 mt-3">
+            <label for="email" class="form-label">账户:</label>
+            <input type="email" class="form-control" id="email" placeholder="email" name="email">
+            </div>
+            <div class="mb-3">
+            <label for="pwd" class="form-label">密码:</label>
+            <input type="password" class="form-control" id="pwd" placeholder="password" name="password">
+            </div>
+            <div class="form-check mb-3">
+            <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" name="remember"> 记住我
+            </label>
+            </div>
+            <button type="submit" class="btn btn-primary">登录</button>
+        </form>
+    </div>
+    <a class="row offset-2" th:href="@{/register}">&nbsp&nbsp注册</a>
+</body>
+</html>

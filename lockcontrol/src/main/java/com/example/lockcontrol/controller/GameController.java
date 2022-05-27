@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.Calendar;
@@ -149,12 +151,72 @@ public class GameController {
     }
 
     @GetMapping("/open")
-    public String open(){
-        return "ononlock";
+    public String open(HttpSession session,Model model){
+        User user = (User)session.getAttribute("user");
+        Integer open = gameService.findOpen(user.getId());
+        if(open != 0){
+            model.addAttribute("open",open);
+            return "ononlock";
+        }else {
+            model.addAttribute("gamemsg","暂无钥匙!");
+            return "home";
+        }
+    }
+    @GetMapping("/buykeys")
+    public String buyKeys(){
+        return "buykeys";
+    }
+    @GetMapping("/keylockOn")
+    public String keylockOn(HttpSession session,Model model){
+        User user = (User)session.getAttribute("user");
+        Integer open = gameService.findOpen(user.getId());
+        open--;
+        gameService.lockOn(open,user.getId());
+        Integer photo = gameService.getPhoto(user.getId());
+        model.addAttribute("num",photo);
+        return "lockon";
     }
     @GetMapping("/friend")
     public String friend(){
         return "friend";
+    }
+
+    @GetMapping("/withgame")
+    public String withGame(HttpSession session,Model model){
+        User user = (User)session.getAttribute("user");
+        if(gameService.findGame(user.getId()) == null){
+            model.addAttribute("gamemsg","请添加游戏");
+            return "home";
+        }else {
+            model.addAttribute("url","www.lockcontrol.xyz/find" + user.getId());
+            return "withgame";
+        }
+    }
+
+    //其他未登录用户添加时间
+    @GetMapping("/find*")
+    public String find(HttpServletRequest request,Model model){
+        //获取端口号
+        String url = String.valueOf(request.getRequestURL());
+        String[]  url1 = url.split("find");
+        Integer newurl = Integer.valueOf(url1[url1.length-1]);
+
+        //查询时间
+        Date date = new Date();
+        Date time = userService.getTime(newurl);
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(time);
+        c.add(Calendar.HOUR_OF_DAY,1);
+        Date time1 = c.getTime();
+
+        gameService.addTimeForOtherUsers(time1,newurl);
+        //查询时间
+        Date newtime = userService.getTime(newurl);
+        String timeInterval = getTimeInterval(newtime, date);
+        model.addAttribute("date",timeInterval);
+
+        return "find";
     }
 
 

@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.Mapping;
 
+import java.util.Date;
+
 /**
  * @author ruiruisa
  * @create 2022-05-15 11:50
@@ -30,4 +32,12 @@ public interface GameMapper {
     //删除游戏
     public void delGame(Integer id);
 
+    //查询撬锁次数
+    public Integer findOpen(Integer id);
+
+    //设置撬锁次数
+    public void lockOn(Integer open,Integer id);
+
+    //其他用户添加时间(1h)
+    public void addTimeForOtherUsers(Date time, Integer id);
 }

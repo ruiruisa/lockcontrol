@@ -38,4 +38,19 @@
     <delete id="delGame">
         delete from game where user_id=${id}
     </delete>
+
+    <!-- public Integer findOpen(Integer id); -->
+    <select id="findOpen" resultType="integer">
+        select open from user where id=${id}
+    </select>
+
+    <!-- public void lockOn(Integer id); -->
+    <update id="lockOn">
+        update user set open=${open} where id=${id}
+    </update>
+
+    <!-- public void addTimeForOtherUsers(Integer id); -->
+    <update id="addTimeForOtherUsers">
+        update game set time=#{time} where user_id=${id}
+    </update>
 </mapper>

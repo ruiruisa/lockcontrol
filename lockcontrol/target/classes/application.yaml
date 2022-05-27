@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:mysql:///cassette
+    username: cassette
+    password: wyx520zrj...
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+#配置mybatis规则
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*
+

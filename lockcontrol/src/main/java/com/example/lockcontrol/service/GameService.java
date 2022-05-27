@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Date;
+
 /**
  * @author ruiruisa
  * @create 2022-05-15 11:50
@@ -43,6 +45,17 @@ public class GameService {
 
     public void delGame(Integer id){
         gameMapper.delGame(id);
+    }
+
+    public Integer findOpen(Integer id){
+        return gameMapper.findOpen(id);
+    }
+    public void lockOn(Integer open,Integer id){
+        gameMapper.lockOn(open, id);
+    }
+
+    public void addTimeForOtherUsers(Date time, Integer id){
+        gameMapper.addTimeForOtherUsers(time, id);
     }
 }
 

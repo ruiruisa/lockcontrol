@@ -14,4 +14,6 @@ public class User {
     private String email;
     //正版
     private int grade;
+
+    private int open;
 }
