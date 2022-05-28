@@ -1,5 +1,6 @@
 package com.example.lockcontrol.controller;
 
+import com.example.lockcontrol.bean.Friend;
 import com.example.lockcontrol.bean.User;
 import com.example.lockcontrol.service.GameService;
 import com.example.lockcontrol.service.UserService;
@@ -10,10 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author ruiruisa
@@ -106,6 +107,67 @@ public class UserController {
         userService.register(user);
         return "login";
     }
+    //好友
+    @GetMapping("/friend")
+    public String friend(HttpSession session,Model model){
+        User user = (User) session.getAttribute("user");
+        List<Friend> friends = userService.getFriend(user.getId());
+        if(friends != null){
+            List<Friend> yesFriend = new LinkedList<>();
+            List<Friend> noFriend = new LinkedList<>();
+            for(Friend friend : friends)
+            if(friend.getYesorno()==0){
+                if(friend.getFriendId()==user.getId()){
+                    noFriend.add(friend);
+                }
+            }else {
+                yesFriend.add(friend);
+            }
+            model.addAttribute("num",noFriend.size());
+            model.addAttribute("yesfriends",yesFriend);
+            model.addAttribute("nofriends",noFriend);
+        }else {
+            Friend friend = new Friend();
+            friend.setFriendId(null);
+            friend.setUserId(null);
+            friend.setFwith(null);
+            friend.setYesorno(null);
+            model.addAttribute("yesfriends",friend);
+            model.addAttribute("nofriends",friend);
+        }
 
+        return "friend";
+    }
+
+    @PostMapping("/findfriend")
+    public String findFriend(String name,Model model){
+        List<User> user = userService.getUser(name);
+        model.addAttribute("user",user);
+        return "findfriend";
+    }
+
+    @GetMapping("/addfriend")
+    public String addFriend(HttpSession session,Integer id){
+        User user = (User) session.getAttribute("user");
+        User friendUser = userService.findUser(id);
+        Friend friend = new Friend();
+        friend.setUserId(user.getId());
+        friend.setFriendId(id);
+        friend.setFriendName(friendUser.getName());
+
+        userService.addFriend(friend);
+        return "redirect:/friend";
+    }
+
+    @GetMapping("/yesfriends")
+    public String yesFriends(Integer userId,Integer friendId){
+        userService.yesFriends(userId,friendId);
+        return "redirect:/friend";
+    }
+    @GetMapping("/nofriends")
+    public String noFriends(Integer userId,Integer friendId){
+        userService.noFriends(userId, friendId);
+        return "redirect:/friend";
+    }
 
 }

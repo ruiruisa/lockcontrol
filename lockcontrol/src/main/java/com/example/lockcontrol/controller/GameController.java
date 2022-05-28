@@ -58,28 +58,29 @@ public class GameController {
     public String tonewgame(NewGame newGame, HttpSession session, Model model){
         User user = (User)session.getAttribute("user");
         Game game = new Game();
-        if (("photo").equals(newGame.getType())) {
-            Date date = new java.sql.Date(new java.util.Date().getTime());
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);//设置起时间
-            calendar.add(Calendar.MONTH, newGame.getMonth());
-            calendar.add(Calendar.DATE, newGame.getDay());
-            calendar.add(Calendar.HOUR, newGame.getHour());
-            date = calendar.getTime();
-            game.setDatetime(date);
-            game.setUserId(user.getId());
-            if (("yes").equals(newGame.getClean())) {
-                game.setClean(newGame.getCleannum());
-            }else{
-                game.setClean(0);
-            }
-            game.setId(user.getId());
-            gameService.toNewGame(game);
-            session.setAttribute("game", game);
+        Date date = new java.sql.Date(new java.util.Date().getTime());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);//设置起时间
+        calendar.add(Calendar.MONTH, newGame.getMonth());
+        calendar.add(Calendar.DATE, newGame.getDay());
+        calendar.add(Calendar.HOUR, newGame.getHour());
+        date = calendar.getTime();
+        game.setDatetime(date);
+        game.setUserId(user.getId());
+        if (("yes").equals(newGame.getClean())) {
+            game.setClean(newGame.getCleannum());
+        } else {
+            game.setClean(0);
+        }
+        game.setId(user.getId());
+        gameService.toNewGame(game);
+        session.setAttribute("game", game);
+        if (("photo").equals(newGame.getType())) {
             return "photoset";
         } else {
-            return "numset";
+            return "masterset";
         }
     }
 
@@ -175,10 +176,6 @@ public class GameController {
         Integer photo = gameService.getPhoto(user.getId());
         model.addAttribute("num",photo);
         return "lockon";
-    }
-    @GetMapping("/friend")
-    public String friend(){
-        return "friend";
     }
 
     @GetMapping("/withgame")

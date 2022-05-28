@@ -18,4 +18,35 @@
     <select id="getTime" resultType="date">
         select time from game where user_id=${id}
     </select>
+
+    <!-- public List<Integer> getFriend(Integer id); -->
+    <select id="getFriend" resultType="com.example.lockcontrol.bean.Friend">
+        select * from friend where user_id=${id} or friend_id=${id}
+    </select>
+
+    <!-- public List<User> getUser(String name); -->
+    <select id="getUser" resultType="com.example.lockcontrol.bean.User">
+        select * from user where name like #{name}
+    </select>
+
+    <!-- public void addFriend(Friend friend); -->
+    <insert id="addFriend">
+        insert into friend set user_id=${userId},friend_id=${friendId},fwith=null,friend_name=#{friendName}
+    </insert>
+
+    <!-- public User findUser(Integer id); -->
+    <select id="findUser" resultType="com.example.lockcontrol.bean.User">
+        select * from user where id=${id}
+    </select>
+
+    <!-- public void yesFriends(Integer id); -->
+    <update id="yesFriends">
+        update friend set yesorno=1 where user_id=${userId} and friend_id=${friendId}
+    </update>
+
+    <!-- public void noFriends(Integer userId,Integer friendId); -->
+    <delete id="noFriends">
+        delete from friend where user_id=${userId} and friend_id=${friendId}
+    </delete>
+
 </mapper>

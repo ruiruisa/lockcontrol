@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- 新 Bootstrap5 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+    <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
+    <script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
+    <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>findfriend</title>
+</head>
+<body>
+<link th:replace="common :: topmenu">
+<br><br><br>
+<div class="container row=6">
+    <h1 class="text-info">添加好友</h1>
+    <br>
+    <form class="col-8" th:action="@{/findfriend}" method="post">
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" placeholder="用户名" name="name">
+            </div>
+            <button type="submit" class="btn btn-primary col-3">搜索</button>
+        </div>
+    </form>
+    <br>
+    <table>
+
+    </table>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>添加</th>
+        </tr>
+        </thead>
+        <div th:each="user : ${user}">
+        <tbody>
+        <tr>
+            <td th:text="${user.name}">123</td>
+            <td>
+                <form th:action="@{/addfriend}">
+                    <input type="hidden" name="id" th:value="${user.id}">
+                    <input type="submit" value="+">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+        </div>
+    </table>
+</div>
+
+</body>
+</html>

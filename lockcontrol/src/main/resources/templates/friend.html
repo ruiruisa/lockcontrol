@@ -13,6 +13,94 @@
 </head>
 <body>
 <link th:replace="common :: topmenu">
-<h1>暂未上线</h1>
+<br><br><br>
+<div class="container row=6">
+    <h1 class="text-info">好友</h1>
+    <br>
+
+    <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+        待添加好友<span class="badge rounded-pill bg-danger" th:text="${num}">4</span>
+    </button>
+
+    <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+        <div class="offcanvas-header">
+            <h5 id="offcanvasTopLabel">待添加好友</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>同意</th>
+                    <th>拒绝</th>
+                </tr>
+                </thead>
+                <div th:each="nofriends : ${nofriends}">
+                    <tbody>
+                    <tr>
+                        <td th:text="${nofriends.friendName}">123</td>
+                        <td>
+                            <form th:action="@{/yesfriends}">
+                                <input type="hidden" name="userId" th:value="${nofriends.userId}">
+                                <input type="hidden" name="friendId" th:value="${nofriends.friendId}">
+                                <input type="submit" value="√">
+                            </form>
+                        </td>
+                        <td>
+                            <form th:action="@{/nofriends}">
+                                <input type="hidden" name="userId" th:value="${nofriends.userId}">
+                                <input type="hidden" name="friendId" th:value="${nofriends.friendId}">
+                                <input type="submit" value="×">
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </div>
+            </table>
+        </div>
+    </div>
+    <br><br>
+
+    <form class="col-8" th:action="@{/findfriend}" method="post">
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" placeholder="用户名" name="name">
+            </div>
+            <button type="submit" class="btn btn-primary col-3">搜索</button>
+        </div>
+    </form>
+    <br>
+    <table>
+
+    </table>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>属性</th>
+            <th>关系</th>
+            <th>删除</th>
+        </tr>
+        </thead>
+        <div th:each="yesfriends : ${yesfriends}">
+        <tbody>
+        <tr>
+            <td th:text="${yesfriends.friendName}">123</td>
+            <td class="text-warning">Dom</td>
+            <td class="text-success" th:text="${yesfriends.fwith}">好啊</td>
+            <td>
+                <form  >
+                    <input type="hidden" name="delfriend" value="1">
+                    <input type="submit" value="X">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+        </div>
+    </table>
+</div>
+
 </body>
 </html>
