@@ -17,6 +17,9 @@ public interface UserMapper {
 
     public void register(User user);
 
+    //检查邮箱是否重复
+    public User checkEmail(String email);
+
     //获取自己时间
     public Date getTime(Integer id);
 

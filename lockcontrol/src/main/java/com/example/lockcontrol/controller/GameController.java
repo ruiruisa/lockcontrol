@@ -93,7 +93,7 @@ public class GameController {
         game.setMasterId(0);
         gameService.toNewGame(game);
         session.setAttribute("game", game);
-        if (("photo").equals(newGame.getType())) {
+        if (game.getGameType()==0) {
             return "photoset";
         } else {
             return "masterset";

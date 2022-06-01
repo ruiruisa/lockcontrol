@@ -25,6 +25,11 @@ public class UserService {
         userMapper.register(user);
     }
 
+    public User checkEmail(String email){
+        return userMapper.checkEmail(email);
+    }
+
+
     public Date getTime(Integer id){
         return userMapper.getTime(id);
     }

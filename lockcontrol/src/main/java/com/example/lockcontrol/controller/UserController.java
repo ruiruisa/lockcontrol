@@ -37,14 +37,14 @@ public class UserController {
 
     //登录
     @PostMapping("/userlogin")
-    public String register(User user, HttpSession session){
+    public String register(User user, HttpSession session,Model model){
         User loginUser = userService.loginUser(user.getEmail(), user.getPassword());
         if(loginUser != null){
             session.setAttribute("user",loginUser);
             return "redirect:/home";
         }else{
-            session.setAttribute("msg","邮箱或密码错误!");
-            return "redirect:/login";
+            model.addAttribute("msg","邮箱或密码错误!");
+            return "login";
         }
     }
     @GetMapping("/home")
@@ -113,9 +113,15 @@ public class UserController {
         return "register";
     }
     @PostMapping("/register")
-    public String postregister(User user){
-        userService.register(user);
-        return "login";
+    public String postregister(User user,Model model){
+        User user1 = userService.checkEmail(user.getEmail());
+        if(user1 != null){
+            model.addAttribute("msg","此邮箱已被注册!");
+            return "login";
+        }else{
+            userService.register(user);
+            return "login";
+        }
     }
     //好友
     @GetMapping("/friend")

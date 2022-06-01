@@ -14,6 +14,11 @@
         insert into user set name=#{name},password=#{password},email=#{email},attribute=#{attribute}
     </insert>
 
+    <!-- public User checkEmail(String email); -->
+    <select id="checkEmail" resultType="com.example.lockcontrol.bean.User">
+        select * from user where email=#{email}
+    </select>
+
     <!-- public List<Integer> getTime(Integer id); -->
     <select id="getTime" resultType="date">
         select time from game where user_id=${id}
