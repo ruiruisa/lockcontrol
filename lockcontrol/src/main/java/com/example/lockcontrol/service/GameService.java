@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author ruiruisa
@@ -21,6 +22,10 @@ public class GameService {
 
     public void toNewGame(Game game){
         gameMapper.toNewGame(game);
+    }
+
+    public void masterToNewGame(Game game){
+        gameMapper.masterToNewGame(game);
     }
 
     public void setPhoto(Integer num, Integer id){
@@ -56,6 +61,14 @@ public class GameService {
 
     public void addTimeForOtherUsers(Date time, Integer id){
         gameMapper.addTimeForOtherUsers(time, id);
+    }
+
+    public List<Game> findMasterGame(Integer id){
+        return gameMapper.findMasterGame(id);
+    }
+
+    public String findName(Integer id){
+        return gameMapper.findName(id);
     }
 }
 

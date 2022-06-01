@@ -16,4 +16,5 @@ public class User {
     private int grade;
 
     private int open;
+    private char attribute;
 }

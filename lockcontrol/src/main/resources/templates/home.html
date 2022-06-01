@@ -29,35 +29,36 @@
 
     <br><br><br><br><br>
 
-        <form style="margin:0px;display:inline;" th:action="@{/gameclean}">
-            <button type="submit" class="btn btn-outline-info col-2 offset-2">清洁</button>
-        </form>
-        <form style="margin:0px;display:inline;" th:action="@{/lockon}">
-            <button type="submit" class="btn btn-outline-info col-2 offset-1">解锁</button>
-        </form>
-        <form style="margin:0px;display:inline;" th:action="@{/delgame}">
-            <button type="submit" class="btn btn-danger  col-2 offset-1">删除</button>
-        </form>
+        <div class="dropdown row">
+            <button type="button" class="btn btn-info dropdown-toggle col-3 offset-2" data-bs-toggle="dropdown">
+                游戏
+            </button>
+            <div class="dropdown-menu row col-3">
+                <a class="dropdown-item" th:href="@{/game}">新游戏</a>
+                <a class="dropdown-item" th:href="@{/lockon}">解锁</a>
+                <a class="dropdown-item" th:href="@{/gameclean}">清洁</a>
+                <a class="dropdown-item" th:href="@{/delgame}">删除</a>
+                <a class="dropdown-item" th:href="@{/withgame}">分享</a>
+            </div>
+            <button type="button" class="btn btn-primary dropdown-toggle col-3 offset-2" data-bs-toggle="dropdown">
+                其他
+            </button>
+            <div class="dropdown-menu row col-3">
+                <a class="dropdown-item" th:href="@{/friend}">好友</a>
+                <a class="dropdown-item" th:href="@{/control}">锁期管理</a>
+                <a class="dropdown-item" th:href="@{/attribute}">关系</a>
+            </div>
+        </div>
+
 <br><br>
-        <form style="margin:0px;display:inline;" th:action="@{/game}">
-            <button type="submit" class="btn btn-outline-info col-2 offset-2">游戏</button>
-        </form>
-        <form style="margin:0px;display:inline;" th:action="@{/friend}">
-            <button type="submit" class="btn btn-outline-info col-2 offset-1">好友</button>
-        </form>
+
+
         <form style="margin:0px;display:inline;" th:action="@{/open}">
-            <button type="submit" class="btn btn-success col-2 offset-1">撬锁</button>
+            <button type="submit" class="btn btn-success col-2 offset-5">撬锁</button>
         </form>
-<br><br>
-        <form style="margin:0px;display:inline;" th:action="@{/withgame}">
-            <button type="submit" class="btn btn-outline-info col-2 offset-2">分享</button>
-        </form>
-        <form style="margin:0px;display:inline;" action="">
-            <button type="submit" class="btn col-2 offset-1"></button>
-        </form>
-        <form style="margin:0px;display:inline;" action="">
-            <button type="submit" class="btn col-2 offset-1"></button>
-        </form>
+
+
+
 
 
 

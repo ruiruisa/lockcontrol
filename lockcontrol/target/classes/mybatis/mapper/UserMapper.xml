@@ -11,12 +11,17 @@
 
     <!-- public void register(User user); -->
     <insert id="register">
-        insert into user set name=#{name},password=#{password},email=#{email}
+        insert into user set name=#{name},password=#{password},email=#{email},attribute=#{attribute}
     </insert>
 
     <!-- public List<Integer> getTime(Integer id); -->
     <select id="getTime" resultType="date">
         select time from game where user_id=${id}
+    </select>
+
+    <!-- public Date getNTime(Integer id); -->
+    <select id="getNTime" resultType="date">
+        select time from game where master_id=${id}
     </select>
 
     <!-- public List<Integer> getFriend(Integer id); -->
@@ -49,4 +54,13 @@
         delete from friend where user_id=${userId} and friend_id=${friendId}
     </delete>
 
+    <!-- public void attributeSet(Integer userId,Integer friendId,Integer fwith); -->
+    <update id="attributeSet">
+        update friend set fwith=${fwith} where user_id=${userId} and friend_id=${friendId}
+    </update>
+
+    <!-- public void masterLockOn(Integer gameId); -->
+    <update id="masterLockOn">
+        update game set openorclose=0 where id=#{gameId}
+    </update>
 </mapper>

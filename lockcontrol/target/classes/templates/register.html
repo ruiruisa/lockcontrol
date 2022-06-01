@@ -17,7 +17,7 @@
     <title>注册</title>
 </head>
 <body>
-    <br><br><br><br><br><br>
+    <br><br><br><br><br>
     <div class="row">
         <h1 class="offset-2 text-info">注册</h1>
         <form class="col-8 offset-2" th:action="@{/register}" method="post">
@@ -33,6 +33,12 @@
               <label for="pwd" class="form-label">密码:</label>
               <input type="password" class="form-control" id="pwd" placeholder="输入密码" name="password">
             </div>
+            属性:
+            <select class="form-select" name="attribute">
+                <option value="S">S</option>
+                <option value="M">M</option>
+            </select>
+            <br>
             <button type="submit" class="btn btn-primary">注册</button>
           </form>
     </div>

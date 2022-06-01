@@ -53,5 +53,17 @@ public class UserService {
         userMapper.noFriends(userId, friendId);
     }
 
+    public void attributeSet(Integer userId,Integer friendId,Integer fwith){
+        userMapper.attributeSet(userId, friendId, fwith);
+    }
+
+    public Date getNTime(Integer id){
+        return userMapper.getNTime(id);
+    }
+
+    public void masterLockOn(Integer gameId){
+        userMapper.masterLockOn(gameId);
+    }
+
 }
 

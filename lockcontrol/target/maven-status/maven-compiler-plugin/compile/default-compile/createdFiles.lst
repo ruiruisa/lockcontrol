@@ -1,0 +1,14 @@
+com\example\lockcontrol\bean\Control.class
+com\example\lockcontrol\controller\GameController.class
+com\example\lockcontrol\bean\Game.class
+com\example\lockcontrol\LockcontrolApplication.class
+com\example\lockcontrol\service\GameService.class
+com\example\lockcontrol\bean\Friend.class
+com\example\lockcontrol\mapper\UserMapper.class
+com\example\lockcontrol\service\UserService.class
+com\example\lockcontrol\controller\UserController.class
+com\example\lockcontrol\mapper\GameMapper.class
+com\example\lockcontrol\interceptor\LoginInterceptor.class
+com\example\lockcontrol\bean\User.class
+com\example\lockcontrol\bean\NewGame.class
+com\example\lockcontrol\config\AdminWebConfig.class

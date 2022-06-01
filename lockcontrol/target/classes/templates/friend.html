@@ -88,11 +88,11 @@
         <tbody>
         <tr>
             <td th:text="${yesfriends.friendName}">123</td>
-            <td class="text-warning">Dom</td>
+            <td class="text-warning" >Dom</td>
             <td class="text-success" th:text="${yesfriends.fwith}">好啊</td>
             <td>
-                <form  >
-                    <input type="hidden" name="delfriend" value="1">
+                <form th:action="@{/delfriend}">
+                    <input type="hidden" name="delfriend" th:value="${yesfriends.friendId}">
                     <input type="submit" value="X">
                 </form>
             </td>

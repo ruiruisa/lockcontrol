@@ -15,5 +15,7 @@ public class Game {
     private int clean;
     private Integer photo;
     private int userId;
-    private int num;
+    private int openorclose;
+    private int gameType;
+    private int masterId;
 }

@@ -7,6 +7,7 @@ import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.Mapping;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author ruiruisa
@@ -14,7 +15,11 @@ import java.util.Date;
  */
 @Mapper
 public interface GameMapper {
+    //随机密码
     public void toNewGame(Game game);
+
+    //管理者
+    public void masterToNewGame(Game game);
 
     public void setPhoto(Integer num, Integer id);
 
@@ -40,4 +45,10 @@ public interface GameMapper {
 
     //其他用户添加时间(1h)
     public void addTimeForOtherUsers(Date time, Integer id);
+
+    //查找奴
+    public List<Game> findMasterGame(Integer id);
+
+    //查找姓名
+    public String findName(Integer id);
 }

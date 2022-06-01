@@ -6,6 +6,7 @@ G:\space\lockcontrol\src\main\java\com\example\lockcontrol\controller\UserContro
 G:\space\lockcontrol\src\main\java\com\example\lockcontrol\bean\Friend.java
 G:\space\lockcontrol\src\main\java\com\example\lockcontrol\mapper\UserMapper.java
 G:\space\lockcontrol\src\main\java\com\example\lockcontrol\bean\Game.java
+G:\space\lockcontrol\src\main\java\com\example\lockcontrol\bean\Control.java
 G:\space\lockcontrol\src\main\java\com\example\lockcontrol\controller\GameController.java
 G:\space\lockcontrol\src\main\java\com\example\lockcontrol\LockcontrolApplication.java
 G:\space\lockcontrol\src\main\java\com\example\lockcontrol\mapper\GameMapper.java

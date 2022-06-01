@@ -1,6 +1,7 @@
 package com.example.lockcontrol.controller;
 
 import com.example.lockcontrol.bean.Friend;
+import com.example.lockcontrol.bean.Game;
 import com.example.lockcontrol.bean.User;
 import com.example.lockcontrol.service.GameService;
 import com.example.lockcontrol.service.UserService;
@@ -51,11 +52,20 @@ public class UserController {
         //查询时间
 
         User user = (User) session.getAttribute("user");
-        if(gameService.findGame(user.getId()) != null){
-            Date date = new Date();
-            Date time = userService.getTime(user.getId());
-            String timeInterval = getTimeInterval(time, date);
-            model.addAttribute("date",timeInterval);
+        Game game = gameService.findGame(user.getId());
+        if(game != null){
+            switch(game.getGameType()){
+                case 0:
+                    Date date = new Date();
+                    Date time = userService.getTime(user.getId());
+                    String timeInterval = getTimeInterval(time, date);
+                    model.addAttribute("date",timeInterval);
+                    break;
+                case 1:
+                    User master = userService.findUser(game.getMasterId());
+                    model.addAttribute("date","由" + master.getName() + "控制中");
+                    break;
+            }
         }else{
             model.addAttribute("date","暂无游戏");
         }
@@ -109,33 +119,39 @@ public class UserController {
     }
     //好友
     @GetMapping("/friend")
-    public String friend(HttpSession session,Model model){
+    public String friend(HttpSession session,Model model) {
         User user = (User) session.getAttribute("user");
         List<Friend> friends = userService.getFriend(user.getId());
-        if(friends != null){
+        if (friends != null) {
             List<Friend> yesFriend = new LinkedList<>();
             List<Friend> noFriend = new LinkedList<>();
-            for(Friend friend : friends)
-            if(friend.getYesorno()==0){
-                if(friend.getFriendId()==user.getId()){
-                    noFriend.add(friend);
+            for (Friend friend : friends) {
+                if (friend.getYesorno() == 0) {
+                    if (friend.getFriendId() == user.getId()) {
+                        noFriend.add(friend);
+                    }
+                } else {
+                    if(friend.getFwith() != null){
+                        switch (friend.getFwith()) {
+                            case "0":
+                                friend.setFwith("奴");
+                                break;
+                            case "1":
+                                friend.setFwith("主");
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    yesFriend.add(friend);
                 }
-            }else {
-                yesFriend.add(friend);
+                model.addAttribute("num", noFriend.size());
+                model.addAttribute("yesfriends", yesFriend);
+                model.addAttribute("nofriends", noFriend);
             }
-            model.addAttribute("num",noFriend.size());
-            model.addAttribute("yesfriends",yesFriend);
-            model.addAttribute("nofriends",noFriend);
-        }else {
-            Friend friend = new Friend();
-            friend.setFriendId(null);
-            friend.setUserId(null);
-            friend.setFwith(null);
-            friend.setYesorno(null);
-            model.addAttribute("yesfriends",friend);
-            model.addAttribute("nofriends",friend);
-        }
 
+            return "friend";
+        }
         return "friend";
     }
 
@@ -167,6 +183,36 @@ public class UserController {
     @GetMapping("/nofriends")
     public String noFriends(Integer userId,Integer friendId){
         userService.noFriends(userId, friendId);
+        return "redirect:/friend";
+    }
+
+    @GetMapping("/delfriend")
+    public String delFriend(HttpSession session,Integer delfriend){
+        User user = (User) session.getAttribute("user");
+        userService.noFriends(user.getId(),delfriend);
+        return "redirect:/friend";
+    }
+
+    @GetMapping("/attribute")
+    public String attribute(HttpSession session,Model model){
+        User user = (User) session.getAttribute("user");
+        List<Friend> friends = userService.getFriend(user.getId());
+        if(friends != null){
+            List<Friend> yesFriend = new LinkedList<>();
+            for(Friend friend : friends)
+                if(friend.getYesorno()!=0){
+                    yesFriend.add(friend);
+                }
+            model.addAttribute("yesfriends",yesFriend);
+            return "attributeset";
+        }
+        model.addAttribute("gamemsg","请先添加好友!");
+        return "home";
+    }
+    @GetMapping("/attributeset")
+    public String attributeSet(Integer friendId,Integer fwith,HttpSession session){
+        User user = (User) session.getAttribute("user");
+        userService.attributeSet(user.getId(),friendId,fwith);
         return "redirect:/friend";
     }
 

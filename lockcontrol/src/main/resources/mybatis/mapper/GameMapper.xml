@@ -6,7 +6,12 @@
 
     <!-- public void toNewGame(Game game); -->
     <insert id="toNewGame">
-        insert into game set time=#{datetime},clean=${clean},user_id=${userId}
+        insert into game set time=#{datetime},clean=${clean},user_id=${userId},gametype=${gameType},master_id=${masterId}
+    </insert>
+
+    <!-- public void masterToNewGame(Game game); -->
+    <insert id="masterToNewGame">
+        insert into game set time=#{datetime},clean=${clean},user_id=${userId},gametype=${gameType},master_id=${masterId}
     </insert>
 
     <!-- public void setPhoto(String photo); -->
@@ -53,4 +58,14 @@
     <update id="addTimeForOtherUsers">
         update game set time=#{time} where user_id=${id}
     </update>
+
+    <!-- public List<Game> findMasterGame(Integer id); -->
+    <select id="findMasterGame" resultType="com.example.lockcontrol.bean.Game">
+        select * from game where master_id=#{id}
+    </select>
+
+    <!-- public String findName(Integer id); -->
+    <select id="findName" resultType="string">
+        select name from user where id=${id}
+    </select>
 </mapper>

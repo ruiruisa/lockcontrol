@@ -22,40 +22,106 @@
     <br><br><br><br>
     <div class="row">
         <h2 class="offset-4">游戏计划</h2>
-        <form th:action="@{/tonewgame}" method="post">
-        <div class="col-6 offset-3">
-        类型:
-        <select class="form-select" name="type">
-            <option value="photo">随机密码</option>
-        </select>
-        时间:
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="" name="month" value="0">
-            <span class="input-group-text">月</span>
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="" name="day" value="0">
-            <span class="input-group-text">日</span>
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="" name="hour" value="0">
-            <span class="input-group-text">时</span>
-        </div>
-        定时清洁:
-        <select class="form-select" name="clean">
-            <option value="no">否</option>
-            <option value="yes">是</option>
-        </select>
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="" name="cleannum">
-            <span class="input-group-text">次</span>
-        </div>
+    </div>
 
-        <br>
-        <button type="submit" class="btn btn-primary offset-4">提交</button>
+
+<div class="row col-10 offset-1">
+    <div id="accordion">
+        <div class="card">
+            <div class="card-header">
+                <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
+                    随机密码
+                </a>
+            </div>
+            <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+                <div class="card-body">
+
+                    <form th:action="@{/tonewgame}" method="post">
+                        <div class="col-6 offset-3">
+
+
+                            时间:
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="" name="month" value="0">
+                                <span class="input-group-text">月</span>
+                            </div>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="" name="day" value="0">
+                                <span class="input-group-text">日</span>
+                            </div>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="" name="hour" value="0">
+                                <span class="input-group-text">时</span>
+                            </div>
+                            定时清洁:
+                            <select class="form-select" name="clean">
+                                <option value="no">否</option>
+                                <option value="yes">是</option>
+                            </select>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="" name="cleannum">
+                                <span class="input-group-text">次</span>
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-primary offset-4">提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwo">
+                    抽卡
+                </a>
+            </div>
+            <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+                <div class="card-body">
+                    暂无
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThree">
+                    完全由管理者控制
+                </a>
+            </div>
+            <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+                <div class="card-body">
+                    <h6 class="text-danger offset-2">需要先成为主奴关系</h6>
+                    <hr>
+                    <h6 class="">选择你的管理者:</h6>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>属性</th>
+                            <th>关系</th>
+                            <th>选择</th>
+                        </tr>
+                        </thead>
+                        <div th:each="yesfriends : ${yesfriends}">
+                            <tbody>
+                            <tr>
+                                <td th:text="${yesfriends.friendName}">123</td>
+                                <td class="text-warning">Dom</td>
+                                <td class="text-success" th:text="${yesfriends.fwith}">好啊</td>
+                                <td>
+                                    <form th:action="@{/choosemaster}" method="post">
+                                        <input type="hidden" name="master" th:value="${yesfriends.friendId}">
+                                        <input type="submit" value="+">
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </div>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-        </form>
-    </div>
+</div>
 
     
 </body>

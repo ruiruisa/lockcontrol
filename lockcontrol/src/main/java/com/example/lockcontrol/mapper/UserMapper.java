@@ -17,8 +17,11 @@ public interface UserMapper {
 
     public void register(User user);
 
-    //获取时间
+    //获取自己时间
     public Date getTime(Integer id);
+
+    //获取奴时间
+    public Date getNTime(Integer id);
 
     //获取好友id和关系
     public List<Friend> getFriend(Integer id);
@@ -35,7 +38,14 @@ public interface UserMapper {
     //同意添加
     public void yesFriends(Integer userId,Integer friendId);
 
-    //拒绝添加
+    //拒绝添加或删除好友
     public void noFriends(Integer userId,Integer friendId);
+
+    //设置用户关系
+    public void attributeSet(Integer userId,Integer friendId,Integer fwith);
+
+    //主人解锁
+    public void masterLockOn(Integer gameId);
+
 
 }
