@@ -19,9 +19,14 @@
         update game set photo=${num} where user_id=${id}
     </update>
 
-    <!-- public void findGame(Integer id); -->
-    <select id="findGame" resultType="com.example.lockcontrol.bean.Game">
+    <!-- public void findUserGame(Integer id); -->
+    <select id="findUserGame" resultType="com.example.lockcontrol.bean.Game">
         select * from game where user_id=${id}
+    </select>
+
+    <!-- public Game findGameId(Integer id); -->
+    <select id="findGameId" resultType="com.example.lockcontrol.bean.Game">
+        select * from game where id=${id}
     </select>
 
     <!-- public Integer findClean(Integer id); -->
@@ -59,8 +64,13 @@
         update game set time=#{time} where user_id=${id}
     </update>
 
-    <!-- public List<Game> findMasterGame(Integer id); -->
-    <select id="findMasterGame" resultType="com.example.lockcontrol.bean.Game">
+    <!-- public List<Game> findGameUser(Integer id); -->
+    <select id="findGameUser" resultType="com.example.lockcontrol.bean.Game">
+        select * from game where user_id=#{id}
+    </select>
+
+    <!-- public Game findGameMaster(Integer id); -->
+    <select id="findGameMaster" resultType="com.example.lockcontrol.bean.Game">
         select * from game where master_id=#{id}
     </select>
 
@@ -68,4 +78,39 @@
     <select id="findName" resultType="string">
         select name from user where id=${id}
     </select>
+
+    <!-- public List<Game> findMasterGame(Integer id); -->
+    <select id="findMasterGame" resultType="com.example.lockcontrol.bean.Game">
+        select * from game where master_id=${id}
+    </select>
+
+    <!-- public void addTask(Integer id,String text); -->
+    <update id="addTask">
+        update game set task=#{text},tasksuccess=0 where id=${id}
+    </update>
+
+    <!-- public void setTaskTel(Integer id); -->
+    <update id="setTaskTel">
+        update game set teletask=1 where id=${id}
+    </update>
+
+    <!-- public String findTask(Integer id); -->
+    <select id="findTask" resultType="string">
+        select task from game where id=${id}
+    </select>
+
+    <!-- public void delTask(Integer id); -->
+    <update id="delTask">
+        update game set task=null where id=${id}
+    </update>
+
+    <!-- public List<Game> findTelGame(); -->
+    <select id="findTelGame" resultType="com.example.lockcontrol.bean.Game">
+        select * from game where teletask=1
+    </select>
+
+    <!-- public void masterToTask(Integer id);  -->
+    <update id="masterToTask">
+        update game set tasksuccess=1 where id=${id}
+    </update>
 </mapper>

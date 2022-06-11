@@ -16,13 +16,18 @@
     <title>登录</title>
 </head>
 <body>
-    <br><br><br><br><br><br><br>
+    <br><br><br><br><br>
     <div class="row col-8 offset-2">
         <h1 class="text-info">Lock</h1>
         <h4 class="text-danger">[[${msg}]]</h4>
         <form th:action="@{/userlogin}" method="post">
+            账户类型:
+            <select class="form-select" name="attribute">
+                <option value="1">用户</option>
+                <option value="0">管理员</option>
+            </select>
             <div class="mb-3 mt-3">
-            <label for="email" class="form-label">账户:</label>
+            <label for="email" class="form-label">电子邮件:</label>
             <input type="email" class="form-control" id="email" placeholder="email" name="email">
             </div>
             <div class="mb-3">

@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- 新 Bootstrap5 核心 CSS 文件 -->
 <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
- 
+
 <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
 <script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
- 
+
 <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
 <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -37,7 +37,7 @@
                 <a class="dropdown-item" th:href="@{/game}">新游戏</a>
                 <a class="dropdown-item" th:href="@{/lockon}">解锁</a>
                 <a class="dropdown-item" th:href="@{/gameclean}">清洁</a>
-                <a class="dropdown-item" th:href="@{/delgame}">删除</a>
+                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#myModal">删除</a>
                 <a class="dropdown-item" th:href="@{/withgame}">分享</a>
             </div>
             <button type="button" class="btn btn-primary dropdown-toggle col-3 offset-2" data-bs-toggle="dropdown">
@@ -47,9 +47,34 @@
                 <a class="dropdown-item" th:href="@{/friend}">好友</a>
                 <a class="dropdown-item" th:href="@{/control}">锁期管理</a>
                 <a class="dropdown-item" th:href="@{/attribute}">关系</a>
+                <a class="dropdown-item" th:href="@{/mytask}">我的任务</a>
             </div>
         </div>
 
+
+        <!-- 删除模态框 -->
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- 模态框头部 -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">是否要删除游戏</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+
+                    <!-- 模态框底部 -->
+                    <div class="modal-footer">
+                        <form th:action="@{/delgame}">
+                            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">删除</button>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
 <br><br>
 
 

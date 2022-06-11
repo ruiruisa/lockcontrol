@@ -18,4 +18,10 @@ public class Game {
     private int openorclose;
     private int gameType;
     private int masterId;
+    private String task;
+
+    //0:未完成 1:完成
+    private int tasksuccess;
+
+    private int teletask;
 }

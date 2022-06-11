@@ -3,6 +3,7 @@ package com.example.lockcontrol.mapper;
 import com.example.lockcontrol.bean.Friend;
 import com.example.lockcontrol.bean.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.relational.core.sql.In;
 
 import java.util.Date;
 import java.util.List;
@@ -45,10 +46,14 @@ public interface UserMapper {
     public void noFriends(Integer userId,Integer friendId);
 
     //设置用户关系
-    public void attributeSet(Integer userId,Integer friendId,Integer fwith);
+    public void attributeSet(Integer id, Integer fwithFriend,Integer fwithUser);
+
 
     //主人解锁
     public void masterLockOn(Integer gameId);
+
+    //获取好友信息
+    public Friend findFriendMessage(Integer id);
 
 
 }

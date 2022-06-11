@@ -25,6 +25,8 @@
             <th>id</th>
             <th>锁定时间</th>
             <th>解锁</th>
+            <th>添加</th>
+            <th>查看</th>
         </tr>
         </thead>
         <div th:each="controls : ${controls}">
@@ -36,6 +38,18 @@
                     <form th:action="@{/masterlockon}">
                         <input type="hidden" name="id" th:value="${controls.gameId}">
                         <input type="submit" value="√">
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/addtask}">
+                        <input type="hidden" name="id" th:value="${controls.gameId}">
+                        <input type="submit" value="任务">
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/looktask}">
+                        <input type="hidden" name="id" th:value="${controls.gameId}">
+                        <input type="submit" value="任务">
                     </form>
                 </td>
             </tr>

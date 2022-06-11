@@ -2,6 +2,7 @@ package com.example.lockcontrol.controller;
 
 import com.example.lockcontrol.bean.Friend;
 import com.example.lockcontrol.bean.Game;
+import com.example.lockcontrol.bean.MasterTasks;
 import com.example.lockcontrol.bean.User;
 import com.example.lockcontrol.service.GameService;
 import com.example.lockcontrol.service.UserService;
@@ -30,29 +31,57 @@ public class UserController {
     private GameService gameService;
 
     @GetMapping("/")
-    public String handle(HttpSession session, Model model){
-        model.addAttribute("msg",session.getAttribute("msg"));
+    public String handle(HttpSession session, Model model) {
+        model.addAttribute("msg", session.getAttribute("msg"));
         return "login";
     }
 
     //登录
     @PostMapping("/userlogin")
-    public String register(User user, HttpSession session,Model model){
+    public String register(User user, HttpSession session, Model model, Integer attribute) {
         User loginUser = userService.loginUser(user.getEmail(), user.getPassword());
-        if(loginUser != null){
-            session.setAttribute("user",loginUser);
-            return "redirect:/home";
-        }else{
-            model.addAttribute("msg","邮箱或密码错误!");
+        if (loginUser != null) {
+            switch (loginUser.getGrade()) {
+                case 0:
+                    session.setAttribute("user", loginUser);
+                    return "redirect:/home";
+                case 1:
+                    session.setAttribute("user", loginUser);
+                    return "redirect:/masterhome";
+            }
+        } else {
+            model.addAttribute("msg", "邮箱或密码错误!");
             return "login";
         }
+        return "login";
     }
+
+    @GetMapping("/masterhome")
+    public String masterHome(Model model){
+        List<Game> telGame = gameService.findTelGame();
+        List<MasterTasks> masterTasks = new LinkedList<>();
+        for(Game game : telGame){
+            MasterTasks masterTask = new MasterTasks();
+            masterTask.setId(game.getId());
+            User user = userService.findUser(game.getUserId());
+            masterTask.setUserName(user.getName());
+            if(game.getTasksuccess() == 0){
+                masterTask.setStatus("未完成");
+            }else {
+                masterTask.setStatus("已完成");
+            }
+            masterTasks.add(masterTask);
+        }
+        model.addAttribute("game",masterTasks);
+        return "masterhome";
+    }
+
     @GetMapping("/home")
     public String home(HttpSession session,Model model){
         //查询时间
 
         User user = (User) session.getAttribute("user");
-        Game game = gameService.findGame(user.getId());
+        Game game = gameService.findGameUser(user.getId());
         if(game != null){
             switch(game.getGameType()){
                 case 0:
@@ -136,26 +165,80 @@ public class UserController {
                     if (friend.getFriendId() == user.getId()) {
                         noFriend.add(friend);
                     }
-                } else {
-                    if(friend.getFwith() != null){
-                        switch (friend.getFwith()) {
+                } else if(friend.getUserId() == user.getId()){
+                    if (friend.getUserId() == user.getId()) {
+                        if(friend.getFwithUser() != null){
+                            switch (friend.getFwithFriend()) {
+                                case "0":
+                                    friend.setFwithUser("奴");
+                                    yesFriend.add(friend);
+                                    break;
+                                case "1":
+                                    friend.setFwithUser("主");
+                                    yesFriend.add(friend);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    } else if (friend.getFwithFriend() != null){
+                            switch (friend.getFwithUser()) {
+                                case "0":
+                                    friend.setFwithUser("奴");
+                                    yesFriend.add(friend);
+                                    break;
+                                case "1":
+                                    friend.setFwithUser("主");
+                                    yesFriend.add(friend);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }else{
+                        yesFriend.add(friend);
+                    }
+                }else {
+                    User user1 = userService.findUser(friend.getUserId());
+                    friend.setFriendName(user1.getName());
+
+                    if (friend.getUserId() == user.getId()) {
+                        if(friend.getFwithUser() != null){
+                            switch (friend.getFwithFriend()) {
+                                case "0":
+                                    friend.setFwithUser("奴");
+                                    yesFriend.add(friend);
+                                    break;
+                                case "1":
+                                    friend.setFwithUser("主");
+                                    yesFriend.add(friend);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    } else if (friend.getFwithFriend() != null){
+                        switch (friend.getFwithUser()) {
                             case "0":
-                                friend.setFwith("奴");
+                                friend.setFwithUser("奴");
+                                yesFriend.add(friend);
                                 break;
                             case "1":
-                                friend.setFwith("主");
+                                friend.setFwithUser("主");
+                                yesFriend.add(friend);
                                 break;
                             default:
                                 break;
                         }
+                    }else{
+                        yesFriend.add(friend);
                     }
-                    yesFriend.add(friend);
                 }
                 model.addAttribute("num", noFriend.size());
                 model.addAttribute("yesfriends", yesFriend);
                 model.addAttribute("nofriends", noFriend);
-            }
 
+                return "friend";
+            }
             return "friend";
         }
         return "friend";
@@ -171,13 +254,15 @@ public class UserController {
     @GetMapping("/addfriend")
     public String addFriend(HttpSession session,Integer id){
         User user = (User) session.getAttribute("user");
-        User friendUser = userService.findUser(id);
-        Friend friend = new Friend();
-        friend.setUserId(user.getId());
-        friend.setFriendId(id);
-        friend.setFriendName(friendUser.getName());
+        if(user.getId() != id){
+            User friendUser = userService.findUser(id);
+            Friend friend = new Friend();
+            friend.setUserId(user.getId());
+            friend.setFriendId(id);
+            friend.setFriendName(friendUser.getName());
+            userService.addFriend(friend);
+        }
 
-        userService.addFriend(friend);
         return "redirect:/friend";
     }
 
@@ -216,9 +301,14 @@ public class UserController {
         return "home";
     }
     @GetMapping("/attributeset")
-    public String attributeSet(Integer friendId,Integer fwith,HttpSession session){
+    public String attributeSet(Integer id,Integer fwith,HttpSession session){
         User user = (User) session.getAttribute("user");
-        userService.attributeSet(user.getId(),friendId,fwith);
+        Friend friend = userService.findFriendMessage(id);
+        if(user.getId() == friend.getUserId()){
+            userService.attributeSet(friend.getId(), fwith,Math.abs(fwith-1));
+        }else {
+            userService.attributeSet(friend.getId(), Math.abs(fwith-1),fwith);
+        }
         return "redirect:/friend";
     }
 

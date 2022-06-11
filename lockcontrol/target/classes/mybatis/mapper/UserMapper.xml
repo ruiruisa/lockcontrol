@@ -41,7 +41,7 @@
 
     <!-- public void addFriend(Friend friend); -->
     <insert id="addFriend">
-        insert into friend set user_id=${userId},friend_id=${friendId},fwith=null,friend_name=#{friendName}
+        insert into friend set user_id=${userId},friend_id=${friendId},fwith_Friend=null,fwith_User=null,friend_name=#{friendName}
     </insert>
 
     <!-- public User findUser(Integer id); -->
@@ -56,16 +56,21 @@
 
     <!-- public void noFriends(Integer userId,Integer friendId); -->
     <delete id="noFriends">
-        delete from friend where user_id=${userId} and friend_id=${friendId}
+        delete from friend where user_id=${userId} and friend_id=${friendId} or user_id=${friendId} and friend_id=${userId}
     </delete>
 
-    <!-- public void attributeSet(Integer userId,Integer friendId,Integer fwith); -->
+    <!-- public void attributeSet(Integer id, Integer fwithFriend,Integer fwithUser); -->
     <update id="attributeSet">
-        update friend set fwith=${fwith} where user_id=${userId} and friend_id=${friendId}
+        update friend set fwith_friend=${fwithFriend},fwith_user=${fwithUser} where id=${id}
     </update>
 
     <!-- public void masterLockOn(Integer gameId); -->
     <update id="masterLockOn">
         update game set openorclose=0 where id=#{gameId}
     </update>
+
+    <!-- public Friend findFriendMessage(Integer id); -->
+    <select id="findFriendMessage" resultType="com.example.lockcontrol.bean.Friend">
+        select * from friend where id=${id}
+    </select>
 </mapper>

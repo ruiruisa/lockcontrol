@@ -89,18 +89,39 @@
         <tr>
             <td th:text="${yesfriends.friendName}">123</td>
             <td class="text-warning" >Dom</td>
-            <td class="text-success" th:text="${yesfriends.fwith}">好啊</td>
+            <td class="text-success" th:text="${yesfriends.fwithUser}">好啊</td>
             <td>
-                <form th:action="@{/delfriend}">
-                    <input type="hidden" name="delfriend" th:value="${yesfriends.friendId}">
-                    <input type="submit" value="X">
-                </form>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">×</button>
             </td>
         </tr>
+
+        <!-- 模态框 -->
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- 模态框头部 -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">将删除好友</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <!-- 模态框底部 -->
+                    <div class="modal-footer">
+                        <form th:action="@{/delfriend}">
+                            <input type="hidden" name="delfriend" th:value="${yesfriends.friendId}">
+                            <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">删除</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         </tbody>
         </div>
     </table>
 </div>
+
+
 
 </body>
 </html>

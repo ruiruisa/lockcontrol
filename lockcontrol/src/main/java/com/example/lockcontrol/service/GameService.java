@@ -32,8 +32,12 @@ public class GameService {
         gameMapper.setPhoto(num,id);
     }
 
-    public Game findGame(Integer id){
-        return gameMapper.findGame(id);
+    public Game findGameUser(Integer id){
+        return gameMapper.findGameUser(id);
+    }
+
+    public Game findGameMaster(Integer id){
+        return gameMapper.findGameMaster(id);
     }
 
     public Integer findClean(Integer id){
@@ -69,6 +73,34 @@ public class GameService {
 
     public String findName(Integer id){
         return gameMapper.findName(id);
+    }
+
+    public void addTask(Integer id,String text){
+        gameMapper.addTask(id, text);
+    }
+
+    public Game findGameId(Integer id){
+        return gameMapper.findGameId(id);
+    }
+
+    public String findTask(Integer id){
+        return gameMapper.findTask(id);
+    }
+
+    public void delTask(Integer id){
+        gameMapper.delTask(id);
+    }
+
+    public void setTaskTel(Integer id){
+        gameMapper.setTaskTel(id);
+    }
+
+    public List<Game> findTelGame(){
+        return gameMapper.findTelGame();
+    }
+
+    public void masterToTask(Integer id){
+        gameMapper.masterToTask(id);
     }
 }
 

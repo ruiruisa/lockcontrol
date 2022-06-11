@@ -37,7 +37,7 @@ public class GameController {
     @GetMapping("/game")
     public String game(HttpSession session,Model model){
         User user = (User)session.getAttribute("user");
-        Game game = gameService.findGame(user.getId());
+        Game game = gameService.findGameUser(user.getId());
         if(game != null){
             switch (game.getGameType()){
                 case 0:
@@ -58,10 +58,8 @@ public class GameController {
             List<Friend> yesFriend = new LinkedList<>();
             for(Friend friend : friends)
                 if(friend.getYesorno()!=0){
-                    if("1".equals(friend.getFwith())){
-                        friend.setFwith("主");
                         yesFriend.add(friend);
-                    }
+
                 }
             model.addAttribute("yesfriends",yesFriend);
         }
@@ -101,12 +99,18 @@ public class GameController {
     }
 
     @PostMapping("/choosemaster")
-    public String chooseMaster(Integer master,HttpSession session){
+    public String chooseMaster(Integer gameId,HttpSession session){
+        User user = (User)session.getAttribute("user");
         Game game = new Game();
         game.setGameType(1);
-        game.setMasterId(master);
-        User user = (User)session.getAttribute("user");
-        game.setUserId(user.getId());
+        Friend friend = userService.findFriendMessage(gameId);
+        if(user.getId() == friend.getUserId()){
+            game.setMasterId(friend.getFriendId());
+            game.setUserId(user.getId());
+        }else {
+            game.setMasterId(user.getId());
+            game.setUserId(friend.getFriendId());
+        }
         game.setClean(0);
         Date date = new Date();
         game.setDatetime(date);
@@ -155,7 +159,7 @@ public class GameController {
     @GetMapping("/lockon")
     public String lockOn(HttpSession session,Model model){
         User user = (User)session.getAttribute("user");
-        Game game = gameService.findGame(user.getId());
+        Game game = gameService.findGameUser(user.getId());
         if(game != null){
             switch(game.getGameType()){
                 case 0:
@@ -195,7 +199,7 @@ public class GameController {
     @GetMapping("/delgame")
     public String delGame(HttpSession session,Model model){
         User user = (User)session.getAttribute("user");
-        Game game = gameService.findGame(user.getId());
+        Game game = gameService.findGameUser(user.getId());
         if(game.getMasterId()==1){
             if(game.getOpenorclose()==1){
                 model.addAttribute("gamemsg","无法删除!");
@@ -243,7 +247,7 @@ public class GameController {
     @GetMapping("/withgame")
     public String withGame(HttpSession session,Model model){
         User user = (User)session.getAttribute("user");
-        if(gameService.findGame(user.getId()) == null){
+        if(gameService.findGameUser(user.getId()) == null){
             model.addAttribute("gamemsg","请添加游戏");
             return "home";
         }else {
@@ -309,5 +313,85 @@ public class GameController {
         return "control";
     }
 
+    @GetMapping("/addtask")
+    public String addTask(Integer id,HttpSession session,Model model){
+        session.setAttribute("gameid",id);
+        if(gameService.findGameId(id).getTask() != null){
+            model.addAttribute("gamemsg","已有任务不能继续添加!");
+            return "home";
+        }else {
+            model.addAttribute("gamemsg","添加成功!");
+            return "addtask";
+        }
+    }
 
+    @PostMapping("/task")
+    public String task(String text,Integer attribute,HttpSession session,Model model){
+        User user = (User)session.getAttribute("user");
+        Integer gameid = (Integer) session.getAttribute("gameid");
+        Game game = gameService.findGameId(gameid);
+        if(game != null){
+            switch(attribute){
+                case 0:
+                    gameService.addTask(gameid,text);
+                    model.addAttribute("text",text);
+                    return "tasklook";
+                case 1:
+                    gameService.addTask(gameid,text);
+                    gameService.setTaskTel(gameid);
+                    return "tasklook";
+            }
+        }
+        return "home";
+    }
+
+    @GetMapping("/looktask")
+    public String lookTask(HttpSession session,Integer id,Model model){
+        User user = (User)session.getAttribute("user");
+        Game game = gameService.findGameId(id);
+        String task = gameService.findTask(game.getId());
+        model.addAttribute("text",task);
+        if(game.getTasksuccess() == 0){
+            model.addAttribute("color","text-danger");
+            model.addAttribute("success","未完成!");
+        }else {
+            model.addAttribute("color","text-success");
+            model.addAttribute("success","已完成!");
+        }
+        return "tasklook";
+    }
+
+    @GetMapping("/mytask")
+    public String myTask(HttpSession session,Model model){
+        User user = (User)session.getAttribute("user");
+        Game game = gameService.findGameUser(user.getId());
+        model.addAttribute("text",game.getTask());
+        if(game.getTasksuccess() == 0){
+            model.addAttribute("color","text-danger");
+            model.addAttribute("success","未完成!");
+        }else {
+            model.addAttribute("color","text-success");
+            model.addAttribute("success","已完成!");
+        }
+        return "tasklook";
+    }
+
+    @GetMapping("/deltask")
+    public String delTask(HttpSession session,Model model){
+        User user = (User)session.getAttribute("user");
+        Game game = gameService.findGameMaster(user.getId());
+        if(game.getUserId() == user.getId()){
+            model.addAttribute("gamemsg","任务只能由主人删除!");
+            return "home";
+        }else {
+            gameService.delTask(game.getId());
+            return "tasklook";
+        }
+    }
+
+    @GetMapping("/materyestask")
+    public String materYesTask(Integer id){
+        gameService.masterToTask(id);
+        return "masterhome";
+    }
 }

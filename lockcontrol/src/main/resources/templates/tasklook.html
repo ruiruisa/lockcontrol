@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- 新 Bootstrap5 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+
+    <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
+    <script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
+
+    <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>tasklook</title>
+</head>
+<body>
+<link th:replace="common :: topmenu">
+    <br><br><br>
+    <div class="row col-10 offset-1">
+        <h1 class="text-info">任务</h1>
+        <div class="mt-4 p-5 bg-secondary text-white rounded">
+            <p th:text="${text}">任务内容</p>
+        </div>
+        <p th:class="${color}" th:text="${success}">未完成</p>
+        <form th:action="@{/deltask}">
+            <button type="submit" class="btn btn-danger">删除任务</button>
+        </form>
+    </div>
+
+</body>
+</html>

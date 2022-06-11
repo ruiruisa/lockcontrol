@@ -23,11 +23,18 @@ public interface GameMapper {
 
     public void setPhoto(Integer num, Integer id);
 
-    //查询是否有游戏
-    public Game findGame(Integer id);
+    //查询是否有游戏user_id
+    public Game findGameUser(Integer id);
+
+    //查询是否有游戏master_id
+    public Game findGameMaster(Integer id);
+
+    //查询游戏id
+    public Game findGameId(Integer id);
 
     //查询剩余清洁次数
     public Integer findClean(Integer id);
+
     //减少一次清洁次数
     public void cutClean(Integer cleannum, Integer id);
 
@@ -51,4 +58,22 @@ public interface GameMapper {
 
     //查找姓名
     public String findName(Integer id);
+
+    //添加任务
+    public void addTask(Integer id,String text);
+
+    //设置任务为Tel
+    public void setTaskTel(Integer id);
+
+    //查询任务
+    public String findTask(Integer id);
+
+    //删除任务
+    public void delTask(Integer id);
+
+    //查询Tel的任务
+    public List<Game> findTelGame();
+
+    //管理者提交任务
+    public void masterToTask(Integer id);
 }

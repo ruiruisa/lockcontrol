@@ -2,6 +2,7 @@ G:\space\lockcontrol\src\main\java\com\example\lockcontrol\bean\User.java
 G:\space\lockcontrol\src\main\java\com\example\lockcontrol\service\UserService.java
 G:\space\lockcontrol\src\main\java\com\example\lockcontrol\interceptor\LoginInterceptor.java
 G:\space\lockcontrol\src\main\java\com\example\lockcontrol\config\AdminWebConfig.java
+G:\space\lockcontrol\src\main\java\com\example\lockcontrol\bean\MasterTasks.java
 G:\space\lockcontrol\src\main\java\com\example\lockcontrol\controller\UserController.java
 G:\space\lockcontrol\src\main\java\com\example\lockcontrol\bean\Friend.java
 G:\space\lockcontrol\src\main\java\com\example\lockcontrol\mapper\UserMapper.java
