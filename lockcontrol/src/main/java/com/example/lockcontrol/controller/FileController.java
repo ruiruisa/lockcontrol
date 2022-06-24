@@ -33,8 +33,8 @@ public class FileController {
         String url = "exampledir/" + name;
         OSSClient.ossupdate(file,url);
         //将文件路径存到数据库中
+
         
-        fileService.addPhoto(photoUrl, user.getId());
         return "redirect:/home";
     }
 
