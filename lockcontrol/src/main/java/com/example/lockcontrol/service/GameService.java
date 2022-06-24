@@ -102,5 +102,9 @@ public class GameService {
     public void masterToTask(Integer id){
         gameMapper.masterToTask(id);
     }
+
+    public String getUrl(Integer id){
+        return gameMapper.getUrl(id);
+    }
 }
 

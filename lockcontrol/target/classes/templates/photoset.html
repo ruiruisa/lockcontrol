@@ -1,30 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- 新 Bootstrap5 核心 CSS 文件 -->
-<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
-<!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
-<script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
-<!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
-<script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>图片验证</title>
+    <meta charset="UTF-8">
+    <!-- 新 Bootstrap5 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+    <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
+    <script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
+    <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>photoset</title>
 </head>
 <body>
-    <br><br><br><br><br><br><br>
-    <div class="row">
-        <form class="col-8 offset-3" th:action="@{/photoon}" method="post">
-            <div class="mb-3 mt-3">
-              <label class="form-label">请输入打乱后的密码</label>
-                <br><br>
-              <input type="text" name="photo">
-            </div>
-            <button type="submit" class="btn btn-primary">提交</button>
+<br><br><br><br><br><br>
+    <div class="row col-6 offset-3">
+        <p class="text-danger">图片不大于8M</p>
+        <form th:action="@{/file}" method="post" enctype="multipart/form-data">
+            <div><input type="file" name="photo"></div>
+            <br>
+            <button type="submit" class="btn btn-primary offset-4">提交</button>
         </form>
     </div>
-    
 </body>
 </html>

@@ -44,6 +44,11 @@
         select photo from game where user_id=${id}
     </select>
 
+    <!-- public String getUrl(Integer id); -->
+    <select id="getUrl" resultType="string">
+        select photourl from game where user_id=${id}
+    </select>
+
     <!-- public void delGame(Integer id); -->
     <delete id="delGame">
         delete from game where user_id=${id}

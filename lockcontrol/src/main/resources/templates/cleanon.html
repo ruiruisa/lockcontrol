@@ -15,10 +15,11 @@
 <link th:replace="common :: topmenu">
 
 <br><br><br><br><br><br><br><br>
-<div class="row col-4 offset-5">
+<div class="text-center">
     <h3>密码为:[[${num}]]</h3>
+    <a th:href="${url}">图片下载</a>
 </div>
-
+<br><br><br>
 <form style="margin:0px;display:inline;" th:action="@{/stopclean}">
     <button type="submit" class="btn btn-outline-info col-2 offset-5">结束</button>
 </form>

@@ -17,11 +17,11 @@
 <div class="row col-6 offset-3">
     <h5>剩余钥匙数量: <span class="badge bg-success" th:text="${open}">2</span></h5>
     <br><br>
-    <form class="offset-2" th:action="buykeys">
+    <form class="offset-2" th:action="@{buykeys}">
         <button type="submit" class="btn btn-info">充值钥匙</button>
     </form>
     <br>
-    <form class="offset-3" th:action="keylockOn">
+    <form class="offset-3" th:action="@{keylockOn}">
         <button type="submit" class="btn btn-success">解锁</button>
     </form>
 </div>

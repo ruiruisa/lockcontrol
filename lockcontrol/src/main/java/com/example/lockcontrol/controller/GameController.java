@@ -41,14 +41,17 @@ public class GameController {
         if(game != null){
             switch (game.getGameType()){
                 case 0:
-                    model.addAttribute("gamemsg","已有游戏，不能继续添加!");
-                    //查询时间
-                    Date date = new Date();
                     Date time = userService.getTime(user.getId());
-                    String timeInterval = getTimeInterval(time, date);
-                    model.addAttribute("date",timeInterval);
+
+                    model.addAttribute("date",time);
+                    model.addAttribute("type",time);
+                    model.addAttribute("gamemsg","已有游戏，不能继续添加!");
+
                     return "home";
                 case 1:
+                    User master = userService.findUser(game.getMasterId());
+                    model.addAttribute("date","由" + master.getName() + "控制中");
+                    model.addAttribute("type","master");
                     model.addAttribute("gamemsg","已有游戏，不能继续添加!");
                     return "home";
             }
@@ -67,10 +70,9 @@ public class GameController {
     }
 
     @PostMapping("/tonewgame")
-    public String tonewgame(NewGame newGame, HttpSession session, Model model){
+    public String tonewgame(String type,NewGame newGame, HttpSession session, Model model){
         User user = (User)session.getAttribute("user");
         Game game = new Game();
-
         Date date = new java.sql.Date(new java.util.Date().getTime());
 
         Calendar calendar = Calendar.getInstance();
@@ -90,16 +92,18 @@ public class GameController {
         game.setGameType(0);
         game.setMasterId(0);
         gameService.toNewGame(game);
+
         session.setAttribute("game", game);
-        if (game.getGameType()==0) {
+
+        if("num".equals(type)){
+            return "numset";
+        }else {
             return "photoset";
-        } else {
-            return "masterset";
         }
     }
 
     @PostMapping("/choosemaster")
-    public String chooseMaster(Integer gameId,HttpSession session){
+    public String chooseMaster(String type, Integer gameId, HttpSession session){
         User user = (User)session.getAttribute("user");
         Game game = new Game();
         game.setGameType(1);
@@ -116,7 +120,12 @@ public class GameController {
         game.setDatetime(date);
         gameService.masterToNewGame(game);
         session.setAttribute("game", game);
-        return "photoset";
+        if("photo".equals(type)){
+            return "photoset";
+        }else {
+            return "numset";
+        }
+
     }
 
 
@@ -143,7 +152,11 @@ public class GameController {
         if(clean != 0){
             gameService.cutClean(clean-1,user.getId());
             Integer photo = gameService.getPhoto(user.getId());
-            model.addAttribute("num",photo);
+            if(photo != 0){
+                model.addAttribute("num",photo);
+            }else {
+                model.addAttribute("url",gameService.getUrl(user.getId()));
+            }
             return "cleanon";
         }else {
             model.addAttribute("cleanmsg","暂无清洁次数!");
@@ -153,7 +166,12 @@ public class GameController {
     @GetMapping("/stopclean")
     public String stopClean(HttpSession session){
         User user = (User)session.getAttribute("user");
-        return "photoset";
+        Game game = gameService.findGameUser(user.getId());
+        if(game.getPhoto() != null){
+            return "urlset";
+        }else {
+            return "photoset";
+        }
     }
 
     @GetMapping("/lockon")
@@ -168,24 +186,34 @@ public class GameController {
                     Date time = userService.getTime(user.getId());
                     if(date.getTime() >= time.getTime()){
                         Integer photo = gameService.getPhoto(user.getId());
-                        model.addAttribute("num",photo);
+                        if(photo != 0){
+                            model.addAttribute("num",photo);
+                        }else {
+                            model.addAttribute("url",gameService.getUrl(user.getId()));
+                        }
                         return "lockon";
                     }else{
                         model.addAttribute("gamemsg","未到解锁时间!");
                         //查询时间
-                        Date date1 = new Date();
                         Date time1 = userService.getTime(user.getId());
-                        String timeInterval = getTimeInterval(time1, date1);
-                        model.addAttribute("date",timeInterval);
+                        model.addAttribute("date",time1);
+                        model.addAttribute("type",time1);
                         return "home";
                     }
                 case 1:
                     if(game.getOpenorclose() == 1){
                         model.addAttribute("gamemsg","主人未解锁!");
+                        User master = userService.findUser(game.getMasterId());
+                        model.addAttribute("date","由" + master.getName() + "控制中");
+                        model.addAttribute("type","master");
                         return "home";
                     }else {
                         Integer photo = gameService.getPhoto(user.getId());
-                        model.addAttribute("num",photo);
+                        if(photo != 0){
+                            model.addAttribute("num",photo);
+                        }else {
+                            model.addAttribute("url",gameService.getUrl(user.getId()));
+                        }
                         return "lockon";
                     }
 
@@ -240,7 +268,12 @@ public class GameController {
         open--;
         gameService.lockOn(open,user.getId());
         Integer photo = gameService.getPhoto(user.getId());
-        model.addAttribute("num",photo);
+        if(photo != 0){
+            model.addAttribute("num",photo);
+        }else {
+            String url = gameService.getUrl(user.getId());
+            model.addAttribute("url",url);
+        }
         return "lockon";
     }
 

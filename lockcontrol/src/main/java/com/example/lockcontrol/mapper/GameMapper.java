@@ -38,8 +38,11 @@ public interface GameMapper {
     //减少一次清洁次数
     public void cutClean(Integer cleannum, Integer id);
 
-    //查询图片名称
+    //查询锁密码
     public Integer getPhoto(Integer id);
+
+    //查询图片url
+    public String getUrl(Integer id);
 
     //删除游戏
     public void delGame(Integer id);

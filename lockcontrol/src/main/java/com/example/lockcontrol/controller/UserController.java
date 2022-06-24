@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -85,18 +86,21 @@ public class UserController {
         if(game != null){
             switch(game.getGameType()){
                 case 0:
-                    Date date = new Date();
                     Date time = userService.getTime(user.getId());
-                    String timeInterval = getTimeInterval(time, date);
-                    model.addAttribute("date",timeInterval);
+
+                    model.addAttribute("date",time);
+                    model.addAttribute("type",time);
+
                     break;
                 case 1:
                     User master = userService.findUser(game.getMasterId());
                     model.addAttribute("date","由" + master.getName() + "控制中");
+                    model.addAttribute("type","master");
                     break;
             }
         }else{
             model.addAttribute("date","暂无游戏");
+            model.addAttribute("type",null);
         }
 
 
@@ -125,7 +129,7 @@ public class UserController {
         long minutes = (diff - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);//获取分钟
         long s = (diff / 1000 - days * 24 * 60 * 60 - hours * 60 * 60 - minutes * 60);//获取秒
         if(day>=1){day--;}
-        String CountTime = "" + year + "年" + month + "月" + day + "天 " + hours + "时" + minutes + "分" + s + "秒";
+        String CountTime = "" + year + "," + month + "," + day + ", " + hours + "," + minutes + "," + s + ",";
         return CountTime;
     }
 
@@ -165,84 +169,18 @@ public class UserController {
                     if (friend.getFriendId() == user.getId()) {
                         noFriend.add(friend);
                     }
-                } else if(friend.getUserId() == user.getId()){
-                    if (friend.getUserId() == user.getId()) {
-                        if(friend.getFwithUser() != null){
-                            switch (friend.getFwithFriend()) {
-                                case "0":
-                                    friend.setFwithUser("奴");
-                                    yesFriend.add(friend);
-                                    break;
-                                case "1":
-                                    friend.setFwithUser("主");
-                                    yesFriend.add(friend);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    } else if (friend.getFwithFriend() != null){
-                            switch (friend.getFwithUser()) {
-                                case "0":
-                                    friend.setFwithUser("奴");
-                                    yesFriend.add(friend);
-                                    break;
-                                case "1":
-                                    friend.setFwithUser("主");
-                                    yesFriend.add(friend);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }else{
-                        yesFriend.add(friend);
-                    }
-                }else {
-                    User user1 = userService.findUser(friend.getUserId());
-                    friend.setFriendName(user1.getName());
-
-                    if (friend.getUserId() == user.getId()) {
-                        if(friend.getFwithUser() != null){
-                            switch (friend.getFwithFriend()) {
-                                case "0":
-                                    friend.setFwithUser("奴");
-                                    yesFriend.add(friend);
-                                    break;
-                                case "1":
-                                    friend.setFwithUser("主");
-                                    yesFriend.add(friend);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    } else if (friend.getFwithFriend() != null){
-                        switch (friend.getFwithUser()) {
-                            case "0":
-                                friend.setFwithUser("奴");
-                                yesFriend.add(friend);
-                                break;
-                            case "1":
-                                friend.setFwithUser("主");
-                                yesFriend.add(friend);
-                                break;
-                            default:
-                                break;
-                        }
-                    }else{
-                        yesFriend.add(friend);
-                    }
+                } else {
+                    yesFriend.add(friend);
                 }
+            }
+
                 model.addAttribute("num", noFriend.size());
                 model.addAttribute("yesfriends", yesFriend);
                 model.addAttribute("nofriends", noFriend);
-
                 return "friend";
             }
             return "friend";
         }
-        return "friend";
-    }
 
     @PostMapping("/findfriend")
     public String findFriend(String name,Model model){
@@ -284,32 +222,5 @@ public class UserController {
         return "redirect:/friend";
     }
 
-    @GetMapping("/attribute")
-    public String attribute(HttpSession session,Model model){
-        User user = (User) session.getAttribute("user");
-        List<Friend> friends = userService.getFriend(user.getId());
-        if(friends != null){
-            List<Friend> yesFriend = new LinkedList<>();
-            for(Friend friend : friends)
-                if(friend.getYesorno()!=0){
-                    yesFriend.add(friend);
-                }
-            model.addAttribute("yesfriends",yesFriend);
-            return "attributeset";
-        }
-        model.addAttribute("gamemsg","请先添加好友!");
-        return "home";
-    }
-    @GetMapping("/attributeset")
-    public String attributeSet(Integer id,Integer fwith,HttpSession session){
-        User user = (User) session.getAttribute("user");
-        Friend friend = userService.findFriendMessage(id);
-        if(user.getId() == friend.getUserId()){
-            userService.attributeSet(friend.getId(), fwith,Math.abs(fwith-1));
-        }else {
-            userService.attributeSet(friend.getId(), Math.abs(fwith-1),fwith);
-        }
-        return "redirect:/friend";
-    }
 
 }

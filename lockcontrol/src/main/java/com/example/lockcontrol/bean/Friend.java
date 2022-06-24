@@ -16,5 +16,6 @@ public class Friend {
     private String fwithFriend;
 
     private String friendName;
+    //0：未加  1：已加
     private Integer yesorno;
 }

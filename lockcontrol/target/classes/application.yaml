@@ -4,6 +4,12 @@ spring:
     username: cassette
     password: wyx520zrj...
     driver-class-name: com.mysql.cj.jdbc.Driver
+    servlet:
+      multipart:
+        enabled: true
+        max-file-size: 8MB
+        max-request-size: 8MB
+
 
 #配置mybatis规则
 mybatis:

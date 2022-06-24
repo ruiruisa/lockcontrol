@@ -18,14 +18,23 @@
 <body>
 
 <link th:replace="common :: topmenu">
-<h3 class="row col-8 offset-2 text-danger">[[${gamemsg}]]</h3>
-
+    <h1 id="gamemsg" class="text-center">[[${gamemsg}]]</h1>
     <br><br><br><br><br><br><br><br>
-
-    <div class="row col-4 offset-4">
-        <button type="button" class="btn btn-danger">剩余时间<br>[[${date}]]
-        </button>
+    <h1 id="msg" class="text-center"></h1>
+    <div class="row col-10 offset-1 list-inline">
+            <h3 id="t_d" class="col"></h3>
+            <h3 id="t_h" class="col"></h3>
+            <h3 id="t_m" class="col"></h3>
+            <h3 id="t_s" class="col"></h3>
     </div>
+
+<script>
+    let message = $("#message").val();
+    if(message!=null){
+        layer.msg(message);
+    }
+</script>
+
 
     <br><br><br><br><br>
 
@@ -38,7 +47,7 @@
                 <a class="dropdown-item" th:href="@{/lockon}">解锁</a>
                 <a class="dropdown-item" th:href="@{/gameclean}">清洁</a>
                 <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#myModal">删除</a>
-                <a class="dropdown-item" th:href="@{/withgame}">分享</a>
+<!--                <a class="dropdown-item" th:href="@{/withgame}">分享</a>-->
             </div>
             <button type="button" class="btn btn-primary dropdown-toggle col-3 offset-2" data-bs-toggle="dropdown">
                 其他
@@ -46,7 +55,6 @@
             <div class="dropdown-menu row col-3">
                 <a class="dropdown-item" th:href="@{/friend}">好友</a>
                 <a class="dropdown-item" th:href="@{/control}">锁期管理</a>
-                <a class="dropdown-item" th:href="@{/attribute}">关系</a>
                 <a class="dropdown-item" th:href="@{/mytask}">我的任务</a>
             </div>
         </div>
@@ -83,9 +91,41 @@
         </form>
 
 
+<script th:inline="javascript" type="text/javascript">
+    function getRTime(){
 
+        if([[${type}]] == null || [[${type}]] == "master"){
+            document.getElementById("msg").innerHTML = [[${date}]];
 
+        }else {
 
+            var EndTime= new Date([[${date}]]); //在这里可以随意定义借宿时间
+
+            var NowTime = new Date();
+
+            var t =EndTime.getTime() - NowTime.getTime();
+
+            var d=Math.floor(t/1000/60/60/24);
+
+            var h=Math.floor(t/1000/60/60%24);
+
+            var m=Math.floor(t/1000/60%60);
+
+            var s=Math.floor(t/1000%60);
+
+            document.getElementById("t_d").innerHTML = d + "天";
+
+            document.getElementById("t_h").innerHTML = h + "时";
+
+            document.getElementById("t_m").innerHTML = m + "分";
+
+            document.getElementById("t_s").innerHTML = s + "秒";
+        }
+
+    }
+
+    window.setInterval(function(){getRTime()},1000);
+</script>
 
 </body>
 </html>
